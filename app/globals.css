@@ -59,6 +59,10 @@
     hsl(263 70% 65%) 0%,
     hsl(199 89% 58%) 100%
   );
+
+  --color-success: hsl(142 71% 45%); /* like green-600 */
+  --color-danger: hsl(0 84% 60%); /* like red-500 */
+  --color-warning: hsl(38 92% 50%); /* like amber-500 */
 }
 
 :root {
@@ -180,5 +184,12 @@
   }
   .bg-gradient-accent {
     background-image: var(--gradient-accent);
+  }
+
+  .text-success {
+    color: var(--color-success);
+  }
+  .text-warning {
+    color: var(--color-warning);
   }
 }
