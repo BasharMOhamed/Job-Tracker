@@ -1,6 +1,8 @@
 import ApplicationCards from "@/components/ApplicationCards";
+import ApplicationsChart from "@/components/ApplicationsChart";
 import ApplicationsTab from "@/components/ApplicationsTab";
 import Hero from "@/components/Hero";
+import RecentActivity from "@/components/RecentActivity";
 import StatsCards from "@/components/StatsCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -19,7 +21,10 @@ export default function Home() {
           <TabsTrigger value="calendar">Calendar</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="mt-4">
-          Overview Content
+          <div className="grid gap-6 md:grid-cols-3">
+            <ApplicationsChart />
+            <RecentActivity />
+          </div>
         </TabsContent>
         <TabsContent value="applications" className="mt-4">
           {/* <ApplicationCards /> */}
