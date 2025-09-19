@@ -58,7 +58,10 @@ export function AddApplication({
           Add Application
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto no-srollbar">
+      <DialogContent
+        style={{ scrollbarWidth: "none" }}
+        className="max-w-4xl max-h-[90vh] overflow-y-auto no-srollbar"
+      >
         <DialogHeader>
           <DialogTitle>Add New Application</DialogTitle>
           <DialogDescription>
