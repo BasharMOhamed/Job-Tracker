@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import ApplicationDistribution from "./ApplicationDistribution";
 import ResponseTimeCard from "./ResponseTimeCard";
+import TrendsCard from "./TrendsCard";
 
 const AnalyticsView = () => {
   return (
@@ -19,8 +20,7 @@ const AnalyticsView = () => {
         </div>
       </TabsContent>
       <TabsContent value="trends" className="mt-4">
-        {/* <ApplicationCards /> */}
-        {/* <ApplicationsTab /> */}
+        <TrendsCard />
       </TabsContent>
       <TabsContent value="performance" className="mt-4">
         <div className="text-center py-12">
