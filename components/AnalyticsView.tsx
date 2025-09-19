@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import ApplicationDistribution from "./ApplicationDistribution";
 import ResponseTimeCard from "./ResponseTimeCard";
 import TrendsCard from "./TrendsCard";
+import ProgressesList from "./ProgressesList";
+import PerformanceCard from "./PerformanceCard";
 
 const AnalyticsView = () => {
   return (
@@ -23,11 +25,8 @@ const AnalyticsView = () => {
         <TrendsCard />
       </TabsContent>
       <TabsContent value="performance" className="mt-4">
-        <div className="text-center py-12">
-          <h3 className="text-lg font-semibold">Performance</h3>
-          <p className="text-muted-foreground mt-2">
-            Performance interface coming soon...
-          </p>
+        <div className="grid gap-6 md:grid-cols-2">
+          <PerformanceCard />
         </div>
       </TabsContent>
       <TabsContent value="insights" className="mt-4">
