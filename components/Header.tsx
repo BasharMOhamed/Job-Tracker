@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { Bell, Plus } from "lucide-react";
 import Profilebtn from "./Profilebtn";
+import { AddApplication } from "./AddApplication";
 
 const Header = () => {
   return (
@@ -14,13 +15,14 @@ const Header = () => {
 
         {/* Actions */}
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <Button
+          {/* <Button
             size={"sm"}
             className="hidden md:flex bg-gradient-primary text-white"
           >
             <Plus className="mr-2 h-4 w-4" />
             Add Application
-          </Button>
+          </Button> */}
+          <AddApplication />
           {/* Notifications */}
           <Button size={"sm"} className="relative" variant={"ghost"}>
             <Bell className="h-5 w-5" />

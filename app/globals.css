@@ -186,10 +186,29 @@
     background-image: var(--gradient-accent);
   }
 
+  /* Firefox */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  /* Chrome, Safari, Edge */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .text-success {
     color: var(--color-success);
   }
   .text-warning {
     color: var(--color-warning);
   }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Chrome, Safari, Edge */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

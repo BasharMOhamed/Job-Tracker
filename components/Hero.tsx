@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { Filter, Plus } from "lucide-react";
 import Image from "next/image";
+import { AddApplication } from "./AddApplication";
 
 const Hero = () => {
   return (
@@ -15,10 +16,11 @@ const Hero = () => {
           our comprehensive job search management platform.
         </p>
         <div className="mt-6 flex flex-col sm:flex-row gap-4">
-          <Button size={"lg"} className="bg-gradient-primary text-white">
+          {/* <Button size={"lg"} className="bg-gradient-primary text-white">
             <Plus className="mr-2 h-5 w-5" />
             Add New Application
-          </Button>
+          </Button> */}
+          <AddApplication />
           <Button size={"lg"} variant={"outline"}>
             <Filter className="mr-2 h-5 w-5" />
             View Analytics
