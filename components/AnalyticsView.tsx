@@ -5,6 +5,7 @@ import ResponseTimeCard from "./ResponseTimeCard";
 import TrendsCard from "./TrendsCard";
 import ProgressesList from "./ProgressesList";
 import PerformanceCard from "./PerformanceCard";
+import ResponseRateCard from "./ResponseRateCard";
 
 const AnalyticsView = () => {
   return (
@@ -26,6 +27,7 @@ const AnalyticsView = () => {
       </TabsContent>
       <TabsContent value="performance" className="mt-4">
         <div className="grid gap-6 md:grid-cols-2">
+          <ResponseRateCard />
           <PerformanceCard />
         </div>
       </TabsContent>

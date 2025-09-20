@@ -12,12 +12,12 @@ const ProgressesList = () => {
       <ProgressComponent
         title="Interview-to-Offer Rate"
         value={67}
-        color="green"
+        color="oklch(0.705 0.015 286.067)"
       />
       <ProgressComponent
         title="Overall Success Rate"
         value={10}
-        color="purple"
+        color="oklch(0.627 0.265 303.9)"
       />
     </div>
   );
