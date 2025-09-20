@@ -6,6 +6,8 @@ import TrendsCard from "./TrendsCard";
 import ProgressesList from "./ProgressesList";
 import PerformanceCard from "./PerformanceCard";
 import ResponseRateCard from "./ResponseRateCard";
+import InsightsList from "./InsightsList";
+import RecommendationsCard from "./RecommendationsCard";
 
 const AnalyticsView = () => {
   return (
@@ -32,11 +34,9 @@ const AnalyticsView = () => {
         </div>
       </TabsContent>
       <TabsContent value="insights" className="mt-4">
-        <div className="text-center py-12">
-          <h3 className="text-lg font-semibold">Insights</h3>
-          <p className="text-muted-foreground mt-2">
-            Insights view coming soon...
-          </p>
+        <div className="space-y-6">
+          <InsightsList />
+          <RecommendationsCard />
         </div>
       </TabsContent>
     </Tabs>

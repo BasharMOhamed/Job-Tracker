@@ -14,7 +14,10 @@ const AnalyticsDialog = ({ children }: { children: React.ReactNode }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        style={{ scrollbarWidth: "none" }}
+        className="max-w-7xl max-h-[90vh] overflow-y-auto"
+      >
         <DialogHeader>
           <DialogTitle>Analytics Dashboard</DialogTitle>
           <DialogDescription>
