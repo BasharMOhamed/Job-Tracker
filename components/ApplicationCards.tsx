@@ -73,10 +73,10 @@ export const ApplicationCard = ({
   notes,
 }: ApplicationCardProps) => {
   const colorMap: Record<ApplicationCardProps["status"], string> = {
-    Offer: "bg-green-400",
-    Interview: "bg-amber-400",
-    Applied: "bg-blue-400",
-    Rejected: "bg-danger",
+    Offer: "bg-green-600",
+    Interview: "bg-amber-500/90",
+    Applied: "bg-blue-500",
+    Rejected: "bg-red-600",
   };
   return (
     <Card className="group cursor-pointer hover:shadow-2xl transition-shadow">

@@ -176,10 +176,10 @@ const KanbanColumn = ({ id, jobs, title, activeJob }: KanbanColumnProps) => {
   const { setNodeRef } = useDroppable({ id });
 
   const colorMap: Record<string, string> = {
-    Offer: "bg-green-400",
-    Interview: "bg-amber-400",
-    Applied: "bg-blue-400",
-    Rejected: "bg-danger",
+    Offer: "bg-green-600",
+    Interview: "bg-amber-500",
+    Applied: "bg-blue-500",
+    Rejected: "bg-red-600",
   };
 
   return (
