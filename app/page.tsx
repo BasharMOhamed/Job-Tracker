@@ -2,6 +2,7 @@ import ApplicationCards from "@/components/ApplicationCards";
 import ApplicationsChart from "@/components/ApplicationsChart";
 import ApplicationsTab from "@/components/ApplicationsTab";
 import Hero from "@/components/Hero";
+import KanbanTab from "@/components/KanbanTab";
 import RecentActivity from "@/components/RecentActivity";
 import StatsCards from "@/components/StatsCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -31,12 +32,13 @@ export default function Home() {
           <ApplicationsTab />
         </TabsContent>
         <TabsContent value="kanban" className="mt-4">
-          <div className="text-center py-12">
+          {/* <div className="text-center py-12">
             <h3 className="text-lg font-semibold">Kanban Board</h3>
             <p className="text-muted-foreground mt-2">
               Drag and drop interface coming soon...
             </p>
-          </div>
+          </div> */}
+          <KanbanTab />
         </TabsContent>
         <TabsContent value="calendar" className="mt-4">
           <div className="text-center py-12">

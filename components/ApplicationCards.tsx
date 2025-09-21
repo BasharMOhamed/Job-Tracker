@@ -64,7 +64,7 @@ const ApplicationCards = () => {
 
 export default ApplicationCards;
 
-const ApplicationCard = ({
+export const ApplicationCard = ({
   company,
   position,
   status,
