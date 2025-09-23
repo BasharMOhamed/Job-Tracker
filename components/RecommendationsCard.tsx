@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import { RecommendationItemProps } from "@/types/Recommendation";
 
 const RecommendationsCard = () => {
   return (
@@ -33,11 +34,6 @@ const RecommendationsCard = () => {
     </Card>
   );
 };
-
-interface RecommendationItemProps {
-  title: string;
-  description: string;
-}
 
 const RecommendationItem = ({
   title,

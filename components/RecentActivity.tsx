@@ -6,13 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-
-interface Activity {
-  id: number;
-  title: string;
-  description: string;
-  type: "offer" | "interview" | "application";
-}
+import { Activity } from "@/types/Activity";
 
 const Activities: Activity[] = [
   {

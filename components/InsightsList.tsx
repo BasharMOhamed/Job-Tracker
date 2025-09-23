@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { IconType } from "recharts/types/component/DefaultLegendContent";
+import { InsightCardProps } from "@/types/Insight";
 
 const InsightsList = () => {
   return (
@@ -28,13 +29,6 @@ const InsightsList = () => {
 };
 
 export default InsightsList;
-
-interface InsightCardProps {
-  title: string;
-  color: string;
-  content: string;
-  value?: string;
-}
 
 const InsightCard = ({ title, color, content, value }: InsightCardProps) => {
   return (

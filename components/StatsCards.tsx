@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   Calendar,
@@ -7,43 +8,43 @@ import {
   Users,
   XCircle,
 } from "lucide-react";
-
-interface StatCardProps {
-  title: string;
-  value: string;
-  description: string;
-  icon: React.ReactNode;
-  trend?: string;
-  className?: string;
-}
+import { StatCardProps } from "@/types/Stats";
+import { useAppStore } from "@/store/useAppStore";
 
 const StatsCards = () => {
+  const { applications, getApplicationsGroupedByStatus, fetchApplications } =
+    useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+  const total = applications.length;
+  const applicationsGroupedByStatus = getApplicationsGroupedByStatus();
   return (
     <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2">
       <StatCard
         title="Total Applications"
-        value="24"
-        description="+12% from last month"
+        value={total}
+        description="+12% from last week"
         trend="+12%"
         icon={<Users className="h-4 w-4 text-muted-foreground" />}
       />
       <StatCard
         title="Interviews Scheduled"
-        value="8"
+        value={applicationsGroupedByStatus.Interview.length}
         description="+3 this week"
         trend="+3"
         icon={<Calendar className="h-4 w-4 text-warning" />}
       />
       <StatCard
         title="Offers Received"
-        value="3"
+        value={applicationsGroupedByStatus.Offer.length}
         description="+1 pending decision"
         trend="+1"
         icon={<CheckCircle className="h-4 w-4 text-success" />}
       />
       <StatCard
         title="Rejections"
-        value="13"
+        value={applicationsGroupedByStatus.Rejected.length}
         description="54% response rate"
         icon={<XCircle className="h-4 w-4 text-destructive" />}
       />

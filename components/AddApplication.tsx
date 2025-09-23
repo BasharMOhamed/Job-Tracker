@@ -11,25 +11,7 @@ import {
 import { Plus } from "lucide-react";
 import { AddNewApplicationForm } from "./AddNewApplicationForm";
 import React from "react";
-
-interface ApplicationFormData {
-  company: string;
-  position: string;
-  jobLink?: string;
-  location?: string;
-  status: "Applied" | "Interview" | "Offer" | "Rejected";
-  dateApplied: Date;
-  interviewDate?: Date;
-  interviewType?: "Onsite" | "Remote" | "Phone" | "Other";
-  interviewer?: string;
-  meetingLink?: string;
-  notes?: string;
-}
-
-interface AddApplicationDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+import { Application } from "@/types/Application";
 
 export function AddApplication({
   onApplicationAdded,
@@ -37,7 +19,7 @@ export function AddApplication({
   onApplicationAdded?: () => void;
 }) {
   const [open, setOpen] = React.useState(false);
-  const handleSubmit = async (data: ApplicationFormData) => {
+  const handleSubmit = async (data: Omit<Application, "id">) => {
     // TODO: Implement API call to save application
     console.log("Saving application:", data);
     setOpen(false);

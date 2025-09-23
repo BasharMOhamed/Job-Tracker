@@ -1,22 +1,45 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Progress } from "./ui/progress";
+import { ProgressComponentProps } from "@/types/Progress";
+import { useAppStore } from "@/store/useAppStore";
 
 const ProgressesList = () => {
+  const { applications, getApplicationsGroupedByStatus, fetchApplications } =
+    useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+
+  const total = applications.length;
+  const groupedApplications = getApplicationsGroupedByStatus();
+
+  const interviewCount = groupedApplications.Interview.length;
+  const offerCount = groupedApplications.Offer.length;
+
+  // Avoid division by zero
+  const applicationToInterviewRate =
+    total > 0 ? (interviewCount / total) * 100 : 0;
+
+  const interviewToOfferRate =
+    interviewCount > 0 ? (offerCount / (interviewCount + offerCount)) * 100 : 0;
+
+  const overallSuccessRate = total > 0 ? (offerCount / total) * 100 : 0;
   return (
     <div className="space-y-6">
       <ProgressComponent
         title="Application-to-Interview Rate"
-        value={15}
+        value={applicationToInterviewRate}
         color="orange"
       />
       <ProgressComponent
         title="Interview-to-Offer Rate"
-        value={67}
+        value={interviewToOfferRate}
         color="oklch(0.705 0.015 286.067)"
       />
       <ProgressComponent
         title="Overall Success Rate"
-        value={10}
+        value={overallSuccessRate}
         color="oklch(0.627 0.265 303.9)"
       />
     </div>
@@ -24,12 +47,6 @@ const ProgressesList = () => {
 };
 
 export default ProgressesList;
-
-interface ProgressComponentProps {
-  title: string;
-  value: number;
-  color: string;
-}
 
 const ProgressComponent = ({ title, value, color }: ProgressComponentProps) => {
   return (

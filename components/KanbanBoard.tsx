@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Badge } from "./ui/badge";
 import { ApplicationCard } from "./ApplicationCards";
 import { Draggable } from "./Draggable";
@@ -14,58 +14,66 @@ import {
   DragOverlay,
   useDroppable,
 } from "@dnd-kit/core";
+import { Columns, KanbanColumnProps } from "@/types/Kanban";
+import { Application } from "@/types/Application";
+import { useAppStore } from "@/store/useAppStore";
 
-type Columns = {
-  Applied: JobCardProps[];
-  Interview: JobCardProps[];
-  Offer: JobCardProps[];
-  Rejected: JobCardProps[];
-};
-const columnstemp: Columns = {
-  Applied: [
-    {
-      id: "1",
-      position: "Frontend Developer",
-      company: "Google",
-      location: "Remote",
-      dateApplied: "2025-09-10",
-      status: "Applied",
-    },
-  ],
-  Interview: [
-    {
-      id: "2",
-      position: "Backend Engineer",
-      company: "Amazon",
-      location: "NYC",
-      dateApplied: "2025-09-12",
-      status: "Interview",
-    },
-    {
-      id: "5",
-      position: "Backend Engineer",
-      company: "Amazon",
-      location: "NYC",
-      dateApplied: "2025-09-12",
-      status: "Interview",
-    },
-  ],
-  Offer: [
-    {
-      id: "3",
-      position: "Product Manager",
-      company: "Meta",
-      location: "SF",
-      dateApplied: "2025-09-14",
-      status: "Offer",
-    },
-  ],
-  Rejected: [],
-};
+// const columnstemp: Columns = {
+//   // Applied: [
+//   //   {
+//   //     id: "1",
+//   //     position: "Frontend Developer",
+//   //     company: "Google",
+//   //     location: "Remote",
+//   //     dateApplied: new Date("2025-09-10"),
+//   //     status: "Applied",
+//   //   },
+//   // ],
+//   // Interview: [
+//   //   {
+//   //     id: "2",
+//   //     position: "Backend Engineer",
+//   //     company: "Amazon",
+//   //     location: "NYC",
+//   //     dateApplied: new Date("2025-09-12"),
+//   //     status: "Interview",
+//   //   },
+//   //   {
+//   //     id: "5",
+//   //     position: "Backend Engineer",
+//   //     company: "Amazon",
+//   //     location: "NYC",
+//   //     dateApplied: new Date("2025-09-12"),
+//   //     status: "Interview",
+//   //   },
+//   // ],
+//   // Offer: [
+//   //   {
+//   //     id: "3",
+//   //     position: "Product Manager",
+//   //     company: "Meta",
+//   //     location: "SF",
+//   //     dateApplied: new Date("2025-09-14"),
+//   //     status: "Offer",
+//   //   },
+//   // ],
+//   // Rejected: [],
+// };
 
 const KanbanBoard = () => {
-  const [columns, setColumns] = React.useState<Columns>(columnstemp);
-  const [activeJob, setActiveJob] = React.useState<JobCardProps | null>(null);
+  const { applications, fetchApplications, moveApplication } = useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+
+  const columns: Columns = {
+    Applied: applications.filter((app) => app.status == "Applied"),
+    Interview: applications.filter((app) => app.status == "Interview"),
+    Offer: applications.filter((app) => app.status == "Offer"),
+    Rejected: applications.filter((app) => app.status == "Rejected"),
+  };
+  // const [columns, setColumns] = React.useState<Columns>(columnstemp);
+  const [activeJob, setActiveJob] = React.useState<Application | null>(null);
 
   const findContainer = (id: string) => {
     return Object.keys(columns).find((key) =>
@@ -99,32 +107,18 @@ const KanbanBoard = () => {
 
     if (origin !== destination) {
       // Moving across columns
-      setColumns((prev) => {
-        const originItems = [...prev[origin]];
-        const destinationItems = [...prev[destination]];
-        const [movedItem] = originItems.splice(
-          originItems.findIndex((i) => i.id === active.id),
-          1
-        );
-
-        // ✅ update the status of the moved job
-        movedItem.status = destination;
-
-        destinationItems.push(movedItem);
-        return {
-          ...prev,
-          [origin]: originItems,
-          [destination]: destinationItems,
-        };
-      });
+      moveApplication(active.id, destination);
     } else {
       // Reordering inside same column
-      setColumns((prev) => {
-        const items = [...prev[origin]];
-        const oldIndex = items.findIndex((i) => i.id === active.id);
-        const newIndex = items.findIndex((i) => i.id === over.id);
-        return { ...prev, [origin]: arrayMove(items, oldIndex, newIndex) };
-      });
+      const items = [...columns[origin]];
+      const oldIndex = items.findIndex((i) => i.id === active.id);
+      const newIndex = items.findIndex((i) => i.id === over.id);
+
+      if (oldIndex !== newIndex) {
+        const reordered = arrayMove(items, oldIndex, newIndex);
+        // optional: update store ordering if needed
+        moveApplication(active.id, origin); // <-- extend your store to accept newIndex
+      }
     }
   };
 
@@ -155,22 +149,6 @@ const KanbanBoard = () => {
 };
 
 export default KanbanBoard;
-
-interface KanbanColumnProps {
-  id: string;
-  title: string;
-  jobs: JobCardProps[];
-  activeJob: JobCardProps | null;
-}
-
-interface JobCardProps {
-  id: string;
-  position: string;
-  company: string;
-  location: string;
-  dateApplied: string;
-  status: "Applied" | "Interview" | "Offer" | "Rejected";
-}
 
 const KanbanColumn = ({ id, jobs, title, activeJob }: KanbanColumnProps) => {
   const { setNodeRef } = useDroppable({ id });

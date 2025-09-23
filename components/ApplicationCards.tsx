@@ -1,58 +1,23 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Calendar, MapPin, MoreHorizontal } from "lucide-react";
 import { Button } from "./ui/button";
-
-interface ApplicationCardProps {
-  company: string;
-  position: string;
-  status: "Applied" | "Interview" | "Offer" | "Rejected";
-  dateApplied: string;
-  location: string;
-  notes?: string;
-}
-
-const mockApplications: ApplicationCardProps[] = [
-  {
-    company: "TechCorp",
-    position: "Senior Frontend Developer",
-    location: "San Francisco, CA",
-    status: "Interview",
-    dateApplied: "2024-01-15",
-    notes:
-      "Great company culture, competitive salary. Interview scheduled for next week.",
-  },
-  {
-    company: "StartupXYZ",
-    position: "Full Stack Engineer",
-    location: "Remote",
-    status: "Applied",
-    dateApplied: "2024-01-12",
-    notes: "Early stage startup, equity opportunity.",
-  },
-  {
-    company: "BigTech Inc",
-    position: "Software Engineer",
-    location: "Seattle, WA",
-    status: "Offer",
-    dateApplied: "2024-01-08",
-    notes: "Excellent benefits package, waiting on decision deadline.",
-  },
-  {
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: "2024-01-05",
-    notes: "Feedback: Looking for more backend experience.",
-  },
-];
+import { Application } from "@/types/Application";
+import { format } from "date-fns";
+import { useAppStore } from "@/store/useAppStore";
 
 const ApplicationCards = () => {
+  const { applications, fetchApplications } = useAppStore();
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+
   return (
     <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
-      {mockApplications.map((application) => (
+      {applications.map((application) => (
         <ApplicationCard
           key={`${application.company}-${application.position}`}
           {...application}
@@ -71,8 +36,8 @@ export const ApplicationCard = ({
   dateApplied,
   location,
   notes,
-}: ApplicationCardProps) => {
-  const colorMap: Record<ApplicationCardProps["status"], string> = {
+}: Application) => {
+  const colorMap: Record<Application["status"], string> = {
     Offer: "bg-green-600",
     Interview: "bg-amber-500/90",
     Applied: "bg-blue-500",
@@ -108,7 +73,9 @@ export const ApplicationCard = ({
           </div>
           <div className="flex items-center gap-0.5">
             <Calendar className="h-4 w-4 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">{dateApplied}</span>
+            <span className="text-xs text-muted-foreground">
+              {format(dateApplied, "y-MM-dd")}
+            </span>
           </div>
         </div>
         <p className="text-sm text-muted-foreground">

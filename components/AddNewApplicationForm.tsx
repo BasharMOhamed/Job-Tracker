@@ -32,6 +32,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import { AddApplicationFormProps } from "@/types/Application";
 // import { useToast } from "@/hooks/use-toast";
 
 const applicationSchema = z.object({
@@ -49,11 +50,6 @@ const applicationSchema = z.object({
 });
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
-
-interface AddApplicationFormProps {
-  onSubmit: (data: ApplicationFormData) => void;
-  onCancel: () => void;
-}
 
 export function AddNewApplicationForm({
   onSubmit,

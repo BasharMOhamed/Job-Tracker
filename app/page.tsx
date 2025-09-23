@@ -1,6 +1,7 @@
 import ApplicationCards from "@/components/ApplicationCards";
 import ApplicationsChart from "@/components/ApplicationsChart";
 import ApplicationsTab from "@/components/ApplicationsTab";
+import CalendarTab from "@/components/Calendar/CalendarTab";
 import Hero from "@/components/Hero";
 import KanbanTab from "@/components/KanbanTab";
 import RecentActivity from "@/components/RecentActivity";
@@ -41,12 +42,13 @@ export default function Home() {
           <KanbanTab />
         </TabsContent>
         <TabsContent value="calendar" className="mt-4">
-          <div className="text-center py-12">
+          {/* <div className="text-center py-12">
             <h3 className="text-lg font-semibold">Interview Calendar</h3>
             <p className="text-muted-foreground mt-2">
               Calendar view coming soon...
             </p>
-          </div>
+          </div> */}
+          <CalendarTab />
         </TabsContent>
       </Tabs>
     </div>
