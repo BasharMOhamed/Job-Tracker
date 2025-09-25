@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import { useAppStore } from "@/store/useAppStore";
+import { groupApplicationsByMonth } from "@/utils/analytics";
+import React, { useEffect } from "react";
 import {
   CartesianGrid,
   Line,
@@ -20,6 +22,12 @@ const monthlyData = [
 ];
 
 const TrendsChart = () => {
+  // const { applications, fetchApplications } = useAppStore();
+  // useEffect(() => {
+  //   fetchApplications();
+  // }, [fetchApplications]);
+
+  // const monthlyData = groupApplicationsByMonth(applications);
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={monthlyData}>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,7 @@ import { CalendarIcon, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Application } from "@/types/Application";
+import { useAppStore } from "@/store/useAppStore";
 // import { useToast } from "@/hooks/use-toast";
 
 export interface Event {
@@ -47,6 +49,10 @@ interface AddEventDialogProps {
 }
 
 export function AddEventDialog({ children }: AddEventDialogProps) {
+  const { applications, fetchApplications, addEvent } = useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState("09:00");
@@ -93,7 +99,9 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
       applicationId: formData.applicationId || undefined,
     };
 
-    onAddEvent(newEvent);
+    // onAddEvent(newEvent);
+    // Todo --> Add Event throgh API
+    addEvent(newEvent);
 
     // Reset form
     setFormData({

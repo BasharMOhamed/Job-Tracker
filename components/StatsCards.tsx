@@ -19,6 +19,10 @@ const StatsCards = () => {
   }, [fetchApplications]);
   const total = applications.length;
   const applicationsGroupedByStatus = getApplicationsGroupedByStatus();
+  // const interviews = applicationsGroupedByStatus.Interview.length
+  // const offers = applicationsGroupedByStatus.Offer.length
+  // const rejections = applicationsGroupedByStatus.Rejected.length
+  const responses = total - applicationsGroupedByStatus.Applied.length;
   return (
     <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2">
       <StatCard
@@ -45,7 +49,7 @@ const StatsCards = () => {
       <StatCard
         title="Rejections"
         value={applicationsGroupedByStatus.Rejected.length}
-        description="54% response rate"
+        description={`${Math.round((responses / total) * 100)}% response rate`}
         icon={<XCircle className="h-4 w-4 text-destructive" />}
       />
     </div>

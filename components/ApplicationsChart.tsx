@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -16,6 +16,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useAppStore } from "@/store/useAppStore";
+import { groupApplicationsByMonth } from "@/utils/analytics";
 const data = [
   { name: "Jan", applications: 4, interviews: 1 },
   { name: "Feb", applications: 7, interviews: 2 },
@@ -26,6 +28,13 @@ const data = [
 ];
 
 const ApplicationsChart = () => {
+  // const { applications, fetchApplications } = useAppStore();
+
+  // useEffect(() => {
+  //   fetchApplications();
+  // }, [fetchApplications]);
+
+  // const data = groupApplicationsByMonth(applications);
   return (
     <Card className="col-span-2">
       <CardHeader>

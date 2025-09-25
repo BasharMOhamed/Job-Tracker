@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import { Application } from "@/types/Application";
 import { format } from "date-fns";
 import { useAppStore } from "@/store/useAppStore";
+import Link from "next/link";
+import { formatFileSize } from "@/utils/helperFunctions";
 
 const ApplicationCards = () => {
   const { applications, fetchApplications } = useAppStore();
@@ -36,6 +38,7 @@ export const ApplicationCard = ({
   dateApplied,
   location,
   notes,
+  attachments,
 }: Application) => {
   const colorMap: Record<Application["status"], string> = {
     Offer: "bg-green-600",
@@ -82,6 +85,12 @@ export const ApplicationCard = ({
           {notes ||
             "Exciting opportunity at a leading tech company. Looking forward to the next steps."}
         </p>
+        {attachments?.map((attachment) => (
+          <div>
+            <Link href={attachment.url}>{attachment.filename}</Link>
+            <p className="text-xs">{formatFileSize(attachment.fileSize)}</p>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );

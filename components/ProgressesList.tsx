@@ -19,12 +19,15 @@ const ProgressesList = () => {
 
   // Avoid division by zero
   const applicationToInterviewRate =
-    total > 0 ? (interviewCount / total) * 100 : 0;
+    total > 0 ? Math.round((interviewCount / total) * 100) : 0;
 
   const interviewToOfferRate =
-    interviewCount > 0 ? (offerCount / (interviewCount + offerCount)) * 100 : 0;
+    interviewCount > 0
+      ? Math.round((offerCount / (interviewCount + offerCount)) * 100)
+      : 0;
 
-  const overallSuccessRate = total > 0 ? (offerCount / total) * 100 : 0;
+  const overallSuccessRate =
+    total > 0 ? Math.round((offerCount / total) * 100) : 0;
   return (
     <div className="space-y-6">
       <ProgressComponent
@@ -41,6 +44,11 @@ const ProgressesList = () => {
         title="Overall Success Rate"
         value={overallSuccessRate}
         color="oklch(0.627 0.265 303.9)"
+      />
+      <ProgressComponent
+        title="Rejection Rate"
+        value={overallSuccessRate}
+        color="red"
       />
     </div>
   );

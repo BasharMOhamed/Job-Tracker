@@ -11,12 +11,12 @@ const CalendarTab = () => {
     <>
       <div className="flex justify-between items-center mb-4 ">
         <h2 className="text-3xl font-bold ">Interview Calendar</h2>
-        {/* <AddEventDialog> */}
-        <Button className="bg-gradient-primary text-white">
-          <Plus className="h-4 w-4" />
-          Add Event
-        </Button>
-        {/* </AddEventDialog> */}
+        <AddEventDialog>
+          <Button className="bg-gradient-primary text-white">
+            <Plus className="h-4 w-4" />
+            Add Event
+          </Button>
+        </AddEventDialog>
       </div>
       <div className="grid md:grid-cols-2 gap-4 mt-4 items-start">
         <UpcomingEvents />

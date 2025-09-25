@@ -173,7 +173,10 @@ const KanbanColumn = ({ id, jobs, title, activeJob }: KanbanColumnProps) => {
         items={jobs.map((j) => j.id)}
         strategy={verticalListSortingStrategy}
       >
-        <div className="space-y-5">
+        <div
+          style={{ scrollbarWidth: "none" }}
+          className="space-y-5 max-h-[600px] overflow-y-auto"
+        >
           {jobs.map((job) => (
             <Draggable key={job.id} id={job.id}>
               {job.id === activeJob?.id ? (

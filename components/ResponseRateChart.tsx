@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import { useAppStore } from "@/store/useAppStore";
+import { prepareWeeklyResponseData } from "@/utils/analytics";
+import React, { useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -12,17 +14,22 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const weeklyResponseData = [
-  { day: "Monday", applications: 15, responses: 4, responseRate: 27 },
-  { day: "Tuesday", applications: 18, responses: 7, responseRate: 39 },
-  { day: "Wednesday", applications: 12, responses: 5, responseRate: 42 },
-  { day: "Thursday", applications: 14, responses: 6, responseRate: 43 },
-  { day: "Friday", applications: 8, responses: 2, responseRate: 25 },
-  { day: "Saturday", applications: 3, responses: 0, responseRate: 0 },
-  { day: "Sunday", applications: 5, responses: 1, responseRate: 20 },
-];
+// const weeklyResponseData = [
+//   { day: "Monday", applications: 15, responses: 4, responseRate: 27 },
+//   { day: "Tuesday", applications: 18, responses: 7, responseRate: 39 },
+//   { day: "Wednesday", applications: 12, responses: 5, responseRate: 42 },
+//   { day: "Thursday", applications: 14, responses: 6, responseRate: 43 },
+//   { day: "Friday", applications: 8, responses: 2, responseRate: 25 },
+//   { day: "Saturday", applications: 3, responses: 0, responseRate: 0 },
+//   { day: "Sunday", applications: 5, responses: 1, responseRate: 20 },
+// ];
 
 const ResponseRateChart = () => {
+  const { applications, fetchApplications } = useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+  const weeklyResponseData = prepareWeeklyResponseData(applications);
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={weeklyResponseData}>

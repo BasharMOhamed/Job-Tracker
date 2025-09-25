@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import { useAppStore } from "@/store/useAppStore";
+import { prepareResponseTimeData } from "@/utils/analytics";
+import React, { useEffect } from "react";
 import {
   Bar,
   BarChart,
@@ -20,6 +22,12 @@ const responseTimeData = [
 ];
 
 const ResponseTimeChart = () => {
+  const { applications, fetchApplications } = useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
+
+  const responseTimeData = prepareResponseTimeData(applications);
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={responseTimeData}>
