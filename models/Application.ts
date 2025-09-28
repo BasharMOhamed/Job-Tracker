@@ -13,6 +13,8 @@ export interface Application extends Document {
   position: string;
   status: "Applied" | "Interview" | "Offer" | "Rejected";
   dateApplied: Date;
+  responseDate: Date;
+  location: string;
   attachments?: Attachment[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -38,7 +40,9 @@ const applicationSchema = new Schema<Application>(
       enum: ["Applied", "Interview", "Offer", "Rejected"],
       required: true,
     },
+    location: { type: String, default: "Cairo, Egypt" },
     dateApplied: { type: Date, required: true },
+    responseDate: { type: Date },
     attachments: [attachmentSchema],
   },
   { timestamps: true }

@@ -20,10 +20,7 @@ const ApplicationCards = () => {
   return (
     <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
       {applications.map((application) => (
-        <ApplicationCard
-          key={`${application.company}-${application.position}`}
-          {...application}
-        />
+        <ApplicationCard key={application._id} {...application} />
       ))}
     </div>
   );
@@ -47,7 +44,7 @@ export const ApplicationCard = ({
     Rejected: "bg-red-600",
   };
   return (
-    <Card className="group cursor-pointer hover:shadow-2xl transition-shadow">
+    <Card className="group hover:shadow-2xl transition-shadow select-none">
       <CardHeader className="flex items-center justify-between">
         <CardTitle>
           <h2 className="text-xl">{company}</h2>
@@ -86,9 +83,19 @@ export const ApplicationCard = ({
             "Exciting opportunity at a leading tech company. Looking forward to the next steps."}
         </p>
         {attachments?.map((attachment) => (
-          <div>
-            <Link href={attachment.url}>{attachment.filename}</Link>
-            <p className="text-xs">{formatFileSize(attachment.fileSize)}</p>
+          <div className="flex justify-between items-center p-2 bg-blue-300/10 rounded-sm my-2">
+            <a
+              target="_blank"
+              href={attachment.url}
+              className="text-sm hover:underline underline-offset-4 text-muted-foreground"
+              onClick={(e) => e.stopPropagation()}
+              draggable={false}
+            >
+              {attachment.filename}
+            </a>
+            <p className="text-xs text-muted-foreground">
+              {formatFileSize(attachment.fileSize)}
+            </p>
           </div>
         ))}
       </CardContent>

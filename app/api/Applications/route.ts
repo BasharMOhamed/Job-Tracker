@@ -16,7 +16,9 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
+    console.log("Before db");
     await connectDB();
+    console.log("Connected");
     const applications = await ApplicationModel.find();
     return NextResponse.json(applications);
   } catch (error) {

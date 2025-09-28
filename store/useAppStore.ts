@@ -3,124 +3,124 @@ import { Application } from "@/types/Application";
 import { Event } from "@/types/Event";
 import { create } from "zustand";
 
-const mockApplications: Application[] = [
-  {
-    id: "5465",
-    company: "TechCorp",
-    position: "Senior Frontend Developer",
-    location: "San Francisco, CA",
-    status: "Interview",
-    dateApplied: new Date("2024-01-15"),
-    dateResponded: new Date("2024-01-25"),
-    notes:
-      "Great company culture, competitive salary. Interview scheduled for next week.",
-  },
-  {
-    id: "548791651665",
+// const mockApplications: Application[] = [
+//   {
+//     id: "5465",
+//     company: "TechCorp",
+//     position: "Senior Frontend Developer",
+//     location: "San Francisco, CA",
+//     status: "Interview",
+//     dateApplied: new Date("2024-01-15"),
+//     dateResponded: new Date("2024-01-25"),
+//     notes:
+//       "Great company culture, competitive salary. Interview scheduled for next week.",
+//   },
+//   {
+//     id: "548791651665",
 
-    company: "StartupXYZ",
-    position: "Full Stack Engineer",
-    location: "Remote",
-    status: "Applied",
-    dateApplied: new Date("2024-01-12"),
-    notes: "Early stage startup, equity opportunity.",
-  },
-  {
-    id: "5484919165",
+//     company: "StartupXYZ",
+//     position: "Full Stack Engineer",
+//     location: "Remote",
+//     status: "Applied",
+//     dateApplied: new Date("2024-01-12"),
+//     notes: "Early stage startup, equity opportunity.",
+//   },
+//   {
+//     id: "5484919165",
 
-    company: "BigTech Inc",
-    position: "Software Engineer",
-    location: "Seattle, WA",
-    status: "Offer",
-    dateApplied: new Date("2024-01-08"),
-    dateResponded: new Date("2024-05-15"),
-    notes: "Excellent benefits package, waiting on decision deadline.",
-  },
-  {
-    id: "54765465",
+//     company: "BigTech Inc",
+//     position: "Software Engineer",
+//     location: "Seattle, WA",
+//     status: "Offer",
+//     dateApplied: new Date("2024-01-08"),
+//     dateResponded: new Date("2024-05-15"),
+//     notes: "Excellent benefits package, waiting on decision deadline.",
+//   },
+//   {
+//     id: "54765465",
 
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-01-05"),
-    dateResponded: new Date("2024-01-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654651",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-01-05"),
+//     dateResponded: new Date("2024-01-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654651",
 
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-01-05"),
-    dateResponded: new Date("2024-01-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654652",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-01-05"),
+//     dateResponded: new Date("2024-01-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654652",
 
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-01-05"),
-    dateResponded: new Date("2024-01-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654653",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-01-05"),
+//     dateResponded: new Date("2024-01-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654653",
 
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-01-05"),
-    dateResponded: new Date("2024-01-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654654",
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-02-05"),
-    dateResponded: new Date("2024-02-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654655",
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-02-05"),
-    dateResponded: new Date("2024-02-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654656",
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-03-05"),
-    dateResponded: new Date("2024-03-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-  {
-    id: "547654657",
-    company: "DataFlow",
-    position: "React Developer",
-    location: "Austin, TX",
-    status: "Rejected",
-    dateApplied: new Date("2024-01-05"),
-    dateResponded: new Date("2024-01-07"),
-    notes: "Feedback: Looking for more backend experience.",
-  },
-];
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-01-05"),
+//     dateResponded: new Date("2024-01-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654654",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-02-05"),
+//     dateResponded: new Date("2024-02-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654655",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-02-05"),
+//     dateResponded: new Date("2024-02-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654656",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-03-05"),
+//     dateResponded: new Date("2024-03-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+//   {
+//     id: "547654657",
+//     company: "DataFlow",
+//     position: "React Developer",
+//     location: "Austin, TX",
+//     status: "Rejected",
+//     dateApplied: new Date("2024-01-05"),
+//     dateResponded: new Date("2024-01-07"),
+//     notes: "Feedback: Looking for more backend experience.",
+//   },
+// ];
 
 const initialMockEvents: Event[] = [
   {
@@ -210,9 +210,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   events: [],
 
   fetchApplications: async () => {
-    // const res = await fetch("/api/applications");
-    // const data = await res.json();
-    set({ applications: mockApplications });
+    const res = await fetch("/api/Applications");
+    const data = await res.json();
+    set({ applications: data });
   },
 
   fetchEvents: async () => {
@@ -227,14 +227,14 @@ export const useAppStore = create<AppState>((set, get) => ({
   updateApplication: (id, updates) =>
     set((state) => ({
       applications: state.applications.map((app) =>
-        app.id === id ? { ...app, ...updates } : app
+        app._id === id ? { ...app, ...updates } : app
       ),
     })),
 
   moveApplication: (id, newStatus) =>
     set((state) => ({
       applications: state.applications.map((app) =>
-        app.id === id ? { ...app, status: newStatus } : app
+        app._id === id ? { ...app, status: newStatus } : app
       ),
     })),
 
@@ -258,7 +258,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   getEventsByStatus: (status: Application["status"]) =>
     get().events.filter((event) => {
-      const app = get().applications.find((a) => a.id === event.applicationId);
+      const app = get().applications.find((a) => a._id === event.applicationId);
       return app?.status === status;
     }),
 

@@ -24,7 +24,7 @@ export function Draggable({
       style={style}
       {...attributes}
       {...listeners}
-      className="cursor-move"
+      className="cursor-grab"
     >
       {children}
     </div>

@@ -72,22 +72,26 @@ const KanbanBoard = () => {
     Offer: applications.filter((app) => app.status == "Offer"),
     Rejected: applications.filter((app) => app.status == "Rejected"),
   };
+  console.log(columns);
   // const [columns, setColumns] = React.useState<Columns>(columnstemp);
   const [activeJob, setActiveJob] = React.useState<Application | null>(null);
 
   const findContainer = (id: string) => {
     return Object.keys(columns).find((key) =>
-      columns[key as keyof typeof columns].some((item) => item.id === id)
+      columns[key as keyof typeof columns].some(
+        (item) => item._id.toString() === id
+      )
     );
   };
 
   const handleDragStart = (event: any) => {
     const { active } = event;
+    console.log("Active: ", active);
     const container = findContainer(active.id);
     if (!container) return;
 
     const job = columns[container as keyof Columns].find(
-      (i) => i.id === active.id
+      (i) => i._id.toString() === active.id
     );
     setActiveJob(job || null);
   };
@@ -111,8 +115,8 @@ const KanbanBoard = () => {
     } else {
       // Reordering inside same column
       const items = [...columns[origin]];
-      const oldIndex = items.findIndex((i) => i.id === active.id);
-      const newIndex = items.findIndex((i) => i.id === over.id);
+      const oldIndex = items.findIndex((i) => i._id.toString() === active.id);
+      const newIndex = items.findIndex((i) => i._id.toString() === over.id);
 
       if (oldIndex !== newIndex) {
         const reordered = arrayMove(items, oldIndex, newIndex);
@@ -170,7 +174,7 @@ const KanbanColumn = ({ id, jobs, title, activeJob }: KanbanColumnProps) => {
         <Badge className="rounded-lg py-0.5">{jobs.length}</Badge>
       </div>
       <SortableContext
-        items={jobs.map((j) => j.id)}
+        items={jobs.map((j) => j._id.toString())}
         strategy={verticalListSortingStrategy}
       >
         <div
@@ -178,8 +182,8 @@ const KanbanColumn = ({ id, jobs, title, activeJob }: KanbanColumnProps) => {
           className="space-y-5 max-h-[600px] overflow-y-auto"
         >
           {jobs.map((job) => (
-            <Draggable key={job.id} id={job.id}>
-              {job.id === activeJob?.id ? (
+            <Draggable key={job._id.toString()} id={job._id.toString()}>
+              {job._id.toString() === activeJob?._id.toString() ? (
                 <div className="opacity-0">
                   <ApplicationCard {...job} />
                 </div>
