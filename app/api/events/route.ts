@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const newEvent = await EventModel.create(body);
     return NextResponse.json(newEvent);
   } catch (error) {
-    return new NextResponse("[POST_EVENT] Internal Server Error", {
+    return new NextResponse(`[POST_EVENT] Internal Server Error ${error}`, {
       status: 500,
     });
   }
