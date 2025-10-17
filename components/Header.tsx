@@ -6,6 +6,7 @@ import { Bell, Plus } from "lucide-react";
 import Profilebtn from "./Profilebtn";
 import { AddApplication } from "./AddApplication";
 import { useAppStore } from "@/store/useAppStore";
+import { UserButton } from "@clerk/nextjs";
 
 const Header = () => {
   const { fetchApplications } = useAppStore();
@@ -39,7 +40,8 @@ const Header = () => {
             </span>
           </Button>
 
-          <Profilebtn />
+          {/* <Profilebtn /> */}
+          <UserButton />
         </div>
       </div>
     </header>
