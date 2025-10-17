@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "@/components/ui/card";
 
 import {
   Area,
@@ -16,25 +16,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useAppStore } from "@/store/useAppStore";
-import { groupApplicationsByMonth } from "@/utils/analytics";
-const data = [
-  { name: "Jan", applications: 4, interviews: 1 },
-  { name: "Feb", applications: 7, interviews: 2 },
-  { name: "Mar", applications: 8, interviews: 3 },
-  { name: "Apr", applications: 12, interviews: 4 },
-  { name: "May", applications: 15, interviews: 6 },
-  { name: "Jun", applications: 18, interviews: 8 },
-];
+import { useStatsStore } from "@/store/useStatsStore";
 
 const ApplicationsChart = () => {
-  // const { applications, fetchApplications } = useAppStore();
+  const { fetchMonthlyStats, monthlyStats } = useStatsStore();
 
-  // useEffect(() => {
-  //   fetchApplications();
-  // }, [fetchApplications]);
+  useEffect(() => {
+    fetchMonthlyStats();
+  }, [fetchMonthlyStats]);
 
-  // const data = groupApplicationsByMonth(applications);
   return (
     <Card className="col-span-2">
       <CardHeader>
@@ -47,7 +37,7 @@ const ApplicationsChart = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={350}>
-          <AreaChart data={data}>
+          <AreaChart data={monthlyStats}>
             <defs>
               <linearGradient id="applications" x1="0" y1="0" x2="0" y2="1">
                 <stop
@@ -75,7 +65,7 @@ const ApplicationsChart = () => {
               </linearGradient>
             </defs>
             <XAxis
-              dataKey="name"
+              dataKey="month"
               stroke="white"
               fontSize={12}
               tickLine={false}

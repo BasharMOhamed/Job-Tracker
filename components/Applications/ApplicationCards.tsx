@@ -1,21 +1,16 @@
 "use client";
-import React, { useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, MoreHorizontal } from "lucide-react";
-import { Button } from "./ui/button";
 import { Application } from "@/types/Application";
 import { format } from "date-fns";
 import { useAppStore } from "@/store/useAppStore";
-import Link from "next/link";
 import { formatFileSize } from "@/utils/helperFunctions";
+import ApplicationOptions from "@/components/Applications/ApplicationOptions";
 
 const ApplicationCards = () => {
   const { applications, fetchApplications } = useAppStore();
-
-  useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
 
   return (
     <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
@@ -29,6 +24,7 @@ const ApplicationCards = () => {
 export default ApplicationCards;
 
 export const ApplicationCard = ({
+  _id,
   company,
   position,
   status,
@@ -51,13 +47,18 @@ export const ApplicationCard = ({
           <h3 className="text-sm text-muted-foreground">{position}</h3>
         </CardTitle>
         <div className="flex items-center gap-2">
-          <Button
-            size={"sm"}
-            variant="ghost"
-            className="opacity-0 group-hover:opacity-100"
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
+          <ApplicationOptions
+            application={{
+              _id,
+              company,
+              position,
+              status,
+              dateApplied,
+              location,
+              notes,
+              attachments,
+            }}
+          />
           <Badge
             className={`text-white ${colorMap[status]} px-2 py-1 rounded-xl`}
           >
@@ -83,7 +84,10 @@ export const ApplicationCard = ({
             "Exciting opportunity at a leading tech company. Looking forward to the next steps."}
         </p>
         {attachments?.map((attachment) => (
-          <div className="flex justify-between items-center p-2 bg-blue-300/10 rounded-sm my-2">
+          <div
+            key={attachment.url}
+            className="flex justify-between items-center p-2 bg-blue-300/10 rounded-sm my-2"
+          >
             <a
               target="_blank"
               href={attachment.url}

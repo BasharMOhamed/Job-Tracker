@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect } from "react";
-import { Badge } from "./ui/badge";
-import { ApplicationCard } from "./ApplicationCards";
-import { Draggable } from "./Draggable";
+import { Badge } from "@/components/ui/badge";
+import { ApplicationCard } from "@/components/Applications/ApplicationCards";
+import { Draggable } from "@/components/Kanban/Draggable";
 import {
   arrayMove,
   SortableContext,
@@ -18,53 +18,11 @@ import { Columns, KanbanColumnProps } from "@/types/Kanban";
 import { Application } from "@/types/Application";
 import { useAppStore } from "@/store/useAppStore";
 
-// const columnstemp: Columns = {
-//   // Applied: [
-//   //   {
-//   //     id: "1",
-//   //     position: "Frontend Developer",
-//   //     company: "Google",
-//   //     location: "Remote",
-//   //     dateApplied: new Date("2025-09-10"),
-//   //     status: "Applied",
-//   //   },
-//   // ],
-//   // Interview: [
-//   //   {
-//   //     id: "2",
-//   //     position: "Backend Engineer",
-//   //     company: "Amazon",
-//   //     location: "NYC",
-//   //     dateApplied: new Date("2025-09-12"),
-//   //     status: "Interview",
-//   //   },
-//   //   {
-//   //     id: "5",
-//   //     position: "Backend Engineer",
-//   //     company: "Amazon",
-//   //     location: "NYC",
-//   //     dateApplied: new Date("2025-09-12"),
-//   //     status: "Interview",
-//   //   },
-//   // ],
-//   // Offer: [
-//   //   {
-//   //     id: "3",
-//   //     position: "Product Manager",
-//   //     company: "Meta",
-//   //     location: "SF",
-//   //     dateApplied: new Date("2025-09-14"),
-//   //     status: "Offer",
-//   //   },
-//   // ],
-//   // Rejected: [],
-// };
-
 const KanbanBoard = () => {
   const { applications, fetchApplications, moveApplication } = useAppStore();
   useEffect(() => {
     fetchApplications();
-  }, [fetchApplications]);
+  }, []);
 
   const columns: Columns = {
     Applied: applications.filter((app) => app.status == "Applied"),
@@ -72,8 +30,7 @@ const KanbanBoard = () => {
     Offer: applications.filter((app) => app.status == "Offer"),
     Rejected: applications.filter((app) => app.status == "Rejected"),
   };
-  console.log(columns);
-  // const [columns, setColumns] = React.useState<Columns>(columnstemp);
+
   const [activeJob, setActiveJob] = React.useState<Application | null>(null);
 
   const findContainer = (id: string) => {

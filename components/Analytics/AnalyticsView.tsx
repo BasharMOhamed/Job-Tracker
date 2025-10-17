@@ -1,13 +1,12 @@
 import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import ApplicationDistribution from "./ApplicationDistribution";
-import ResponseTimeCard from "./ResponseTimeCard";
-import TrendsCard from "./TrendsCard";
-import ProgressesList from "./ProgressesList";
-import PerformanceCard from "./PerformanceCard";
-import ResponseRateCard from "./ResponseRateCard";
-import InsightsList from "./InsightsList";
-import RecommendationsCard from "./RecommendationsCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ApplicationDistribution from "@/components/Analytics/ApplicationDistribution";
+import ResponseTimeCard from "@/components/Analytics/ResponseTimeCard";
+import TrendsCard from "@/components/Analytics/TrendsCard";
+import PerformanceCard from "@/components/Analytics/PerformanceCard";
+import ResponseRateCard from "@/components/Analytics/ResponseRateCard";
+import InsightsList from "@/components/Analytics/InsightsList";
+import RecommendationsCard from "@/components/Analytics/RecommendationsCard";
 
 const AnalyticsView = () => {
   return (
@@ -34,9 +33,15 @@ const AnalyticsView = () => {
         </div>
       </TabsContent>
       <TabsContent value="insights" className="mt-4">
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <InsightsList />
           <RecommendationsCard />
+        </div> */}
+        <div className="text-center py-12">
+          <h3 className="text-lg font-semibold">Insights</h3>
+          <p className="text-muted-foreground mt-2">
+            Insights view coming soon...
+          </p>
         </div>
       </TabsContent>
     </Tabs>

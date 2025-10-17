@@ -29,45 +29,49 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Application } from "@/types/Application";
 import { useAppStore } from "@/store/useAppStore";
+import toast from "react-hot-toast";
+import { Event } from "@/types/Event";
 // import { useToast } from "@/hooks/use-toast";
 
-export interface Event {
-  id: string;
-  applicationId?: string;
-  title: string;
-  date: Date;
-  type: "interview" | "deadline" | "followup" | "review" | "negotiation";
-  company: string;
-  position: string;
-  duration?: string;
-  priority?: "low" | "medium" | "high";
-  notes?: string;
-}
+// export interface Event {
+//   id: string;
+//   applicationId?: string;
+//   title: string;
+//   date: Date;
+//   type: "interview" | "deadline" | "followup" | "review" | "negotiation";
+//   company: string;
+//   position: string;
+//   duration?: string;
+//   priority?: "low" | "medium" | "high";
+//   notes?: string;
+// }
 
 interface AddEventDialogProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  event?: Event;
+  Open?: boolean;
 }
 
-export function AddEventDialog({ children }: AddEventDialogProps) {
+export function AddEventDialog({ children, event, Open }: AddEventDialogProps) {
   const { applications, fetchApplications, addEvent } = useAppStore();
   useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
+    setOpen(Open || false);
+  }, [Open]);
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState("09:00");
   const [formData, setFormData] = useState({
-    title: "",
-    type: "interview" as Event["type"],
-    company: "",
-    position: "",
-    duration: "",
-    priority: "medium" as Event["priority"],
-    notes: "",
-    applicationId: "",
+    title: event?.title || "",
+    type: event?.type || ("interview" as Event["type"]),
+    company: event?.company || "",
+    position: event?.position || "",
+    duration: event?.duration || "",
+    priority: event?.priority || ("medium" as Event["priority"]),
+    notes: event?.notes || "",
+    applicationId: event?.applicationId || "",
   });
-  //   const { toast } = useToast();
 
+  useEffect(() => {});
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -77,11 +81,7 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
       !formData.company ||
       !formData.position
     ) {
-      //   toast({
-      //     title: "Missing Information",
-      //     description: "Please fill in all required fields",
-      //     variant: "destructive",
-      //   });
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -89,8 +89,7 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
     const eventDate = new Date(selectedDate);
     eventDate.setHours(hours, minutes, 0, 0);
 
-    const newEvent: Event = {
-      id: Date.now().toString(),
+    const newEvent: Omit<Event, "_id"> = {
       ...formData,
       date: eventDate,
       duration: formData.duration || undefined,
@@ -99,7 +98,6 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
       applicationId: formData.applicationId || undefined,
     };
 
-    // onAddEvent(newEvent);
     // Todo --> Add Event throgh API
     addEvent(newEvent);
 
@@ -117,15 +115,10 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
     setSelectedDate(undefined);
     setSelectedTime("09:00");
     setOpen(false);
-
-    // toast({
-    //   title: "Event Added",
-    //   description: `${formData.title} has been scheduled successfully`,
-    // });
   };
 
   const handleApplicationSelect = (applicationId: string) => {
-    const app = applications.find((a) => a.id === applicationId);
+    const app = applications.find((a) => a._id === applicationId);
     if (app) {
       setFormData((prev) => ({
         ...prev,
@@ -138,7 +131,7 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
@@ -194,7 +187,7 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
               </SelectTrigger>
               <SelectContent>
                 {applications.map((app) => (
-                  <SelectItem key={app.id} value={app.id}>
+                  <SelectItem key={app._id} value={app._id}>
                     {app.company} - {app.position}
                   </SelectItem>
                 ))}
@@ -316,7 +309,7 @@ export function AddEventDialog({ children }: AddEventDialogProps) {
 
           <div className="flex gap-3 pt-4">
             <Button type="submit" className="flex-1 gradient-primary">
-              Schedule Event
+              {event ? "Update Event" : "Schedule Event"}
             </Button>
             <Button
               type="button"

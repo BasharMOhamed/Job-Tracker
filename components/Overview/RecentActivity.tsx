@@ -1,35 +1,19 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "@/components/ui/card";
 import { Activity } from "@/types/Activity";
-
-const Activities: Activity[] = [
-  {
-    id: 1,
-    title: "Offer received from BigTech Inc",
-    description: "2 hours ago",
-    type: "offer",
-  },
-  {
-    id: 2,
-    title: "Interview scheduled with TechCorp",
-    description: "1 day ago",
-    type: "interview",
-  },
-  {
-    id: 3,
-    title: "Application submitted to StartupXYZ",
-    description: "3 days ago",
-    type: "application",
-  },
-];
-
+import { useAppStore } from "@/store/useAppStore";
 const RecentActivity = () => {
+  const { activities, getActivities } = useAppStore();
+  useEffect(() => {
+    getActivities();
+  }, [getActivities]);
   return (
     <Card>
       <CardHeader>
@@ -40,8 +24,14 @@ const RecentActivity = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {Activities.map((activity) => (
-            <ActivityItem key={activity.id} {...activity} />
+          {activities.map((activity) => (
+            <ActivityItem
+              key={activity._id}
+              type={activity.type}
+              title={activity.message}
+              description={"2 days ago"}
+              id={activity._id}
+            />
           ))}
         </div>
       </CardContent>
@@ -49,11 +39,11 @@ const RecentActivity = () => {
   );
 };
 
-const ActivityItem = ({ title, description, type, id }: Activity) => {
+const ActivityItem = ({ title, description, type }: Activity) => {
   const colorMap: Record<Activity["type"], string> = {
-    offer: "bg-green-400",
-    interview: "bg-amber-400",
-    application: "bg-blue-400",
+    Offer: "bg-green-400",
+    Interview: "bg-amber-400",
+    Applied: "bg-blue-400",
   };
 
   return (

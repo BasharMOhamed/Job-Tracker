@@ -1,9 +1,16 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Calendar } from "lucide-react";
 import { format } from "date-fns";
+import { useAppStore } from "@/store/useAppStore";
+import EventsCard from "./EventsCard";
 
 const TodayEvents = () => {
+  const { todaysEvents, fetchTodayEvents } = useAppStore();
+  useEffect(() => {
+    fetchTodayEvents();
+  }, [fetchTodayEvents]);
   const date = new Date();
   return (
     <Card>
@@ -21,7 +28,10 @@ const TodayEvents = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <NoEvents />
+        {todaysEvents.length === 0 && <NoEvents />}
+        {todaysEvents.map((event) => (
+          <EventsCard key={event._id} {...event} />
+        ))}
       </CardContent>
     </Card>
   );

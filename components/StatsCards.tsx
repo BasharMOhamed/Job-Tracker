@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   Calendar,
@@ -10,19 +10,20 @@ import {
 } from "lucide-react";
 import { StatCardProps } from "@/types/Stats";
 import { useAppStore } from "@/store/useAppStore";
+import { useStatsStore } from "@/store/useStatsStore";
 
 const StatsCards = () => {
-  const { applications, getApplicationsGroupedByStatus, fetchApplications } =
-    useAppStore();
+  const { fetchAppsStats, applicationsStats } = useStatsStore();
   useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
-  const total = applications.length;
-  const applicationsGroupedByStatus = getApplicationsGroupedByStatus();
-  // const interviews = applicationsGroupedByStatus.Interview.length
-  // const offers = applicationsGroupedByStatus.Offer.length
-  // const rejections = applicationsGroupedByStatus.Rejected.length
-  const responses = total - applicationsGroupedByStatus.Applied.length;
+    fetchAppsStats();
+  }, [fetchAppsStats]);
+
+  const total =
+    applicationsStats.Applied +
+    applicationsStats.Interview +
+    applicationsStats.Offer +
+    applicationsStats.Rejected;
+  const responses = total - applicationsStats.Applied;
   return (
     <div className="grid gap-6 lg:grid-cols-4 md:grid-cols-2">
       <StatCard
@@ -34,21 +35,21 @@ const StatsCards = () => {
       />
       <StatCard
         title="Interviews Scheduled"
-        value={applicationsGroupedByStatus.Interview.length}
+        value={applicationsStats.Interview}
         description="+3 this week"
         trend="+3"
         icon={<Calendar className="h-4 w-4 text-warning" />}
       />
       <StatCard
         title="Offers Received"
-        value={applicationsGroupedByStatus.Offer.length}
+        value={applicationsStats.Offer}
         description="+1 pending decision"
         trend="+1"
         icon={<CheckCircle className="h-4 w-4 text-success" />}
       />
       <StatCard
         title="Rejections"
-        value={applicationsGroupedByStatus.Rejected.length}
+        value={applicationsStats.Rejected}
         description={`${Math.round((responses / total) * 100)}% response rate`}
         icon={<XCircle className="h-4 w-4 text-destructive" />}
       />

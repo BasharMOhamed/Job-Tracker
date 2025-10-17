@@ -2,8 +2,20 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Event } from "@/types/Event";
+import { Button } from "../ui/button";
+import { MoreHorizontal } from "lucide-react";
+import { format } from "date-fns";
+import EventOptions from "./EventOptions";
 
-const EventsCard = ({ title, type, company, date, duration }: Event) => {
+const EventsCard = ({
+  _id,
+  title,
+  type,
+  company,
+  date,
+  duration,
+  position,
+}: Event) => {
   const getEventTypeColor = (type: string) => {
     switch (type) {
       case "interview":
@@ -68,15 +80,20 @@ const EventsCard = ({ title, type, company, date, duration }: Event) => {
             <h3 className="text-lg mb-1 font-semibold">{title}</h3>
             <p className="text-sm text-muted-foreground mb-1">{company}</p>
             <p className="text-xs text-muted-foreground">
-              Sep 23, 10:00 AM . 30 minutes
+              {format(date, "MMM d, h:mm a")} . {duration}
             </p>
           </div>
-          <Badge
-            variant={"outline"}
-            className="text-xs border-primary/20 bg-primary/5"
-          >
-            {getEventTypeBadge(type)}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <EventOptions
+              event={{ _id, title, type, company, date, duration, position }}
+            />
+            <Badge
+              variant={"outline"}
+              className="text-xs border-primary/20 bg-primary/5"
+            >
+              {getEventTypeBadge(type)}
+            </Badge>
+          </div>
         </div>
       </CardContent>
     </Card>

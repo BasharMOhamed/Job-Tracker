@@ -1,11 +1,17 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { Bell, Plus } from "lucide-react";
 import Profilebtn from "./Profilebtn";
 import { AddApplication } from "./AddApplication";
+import { useAppStore } from "@/store/useAppStore";
 
 const Header = () => {
+  const { fetchApplications } = useAppStore();
+  useEffect(() => {
+    fetchApplications();
+  }, []);
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-20 px-5">
       <div className="container max-w-7xl mx-auto flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -15,14 +21,15 @@ const Header = () => {
 
         {/* Actions */}
         <div className="flex flex-1 items-center justify-end space-x-4">
-          {/* <Button
-            size={"sm"}
-            className="hidden md:flex bg-gradient-primary text-white"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Add Application
-          </Button> */}
-          <AddApplication />
+          <AddApplication>
+            <Button
+              size={"sm"}
+              className="hidden md:flex bg-gradient-primary text-white"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Add Application
+            </Button>
+          </AddApplication>
           {/* Notifications */}
           <Button size={"sm"} className="relative" variant={"ghost"}>
             <Bell className="h-5 w-5" />

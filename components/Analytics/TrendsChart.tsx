@@ -1,6 +1,5 @@
 "use client";
-import { useAppStore } from "@/store/useAppStore";
-import { groupApplicationsByMonth } from "@/utils/analytics";
+import { useStatsStore } from "@/store/useStatsStore";
 import React, { useEffect } from "react";
 import {
   CartesianGrid,
@@ -12,25 +11,24 @@ import {
   YAxis,
 } from "recharts";
 
-const monthlyData = [
-  { month: "Jan", applications: 12, interviews: 3, offers: 1 },
-  { month: "Feb", applications: 15, interviews: 4, offers: 2 },
-  { month: "Mar", applications: 18, interviews: 5, offers: 1 },
-  { month: "Apr", applications: 10, interviews: 2, offers: 3 },
-  { month: "May", applications: 20, interviews: 6, offers: 1 },
-  { month: "Jun", applications: 5, interviews: 1, offers: 0 },
-];
+// const monthlyData = [
+//   { month: "Jan", applications: 12, interviews: 3, offers: 1 },
+//   { month: "Feb", applications: 15, interviews: 4, offers: 2 },
+//   { month: "Mar", applications: 18, interviews: 5, offers: 1 },
+//   { month: "Apr", applications: 10, interviews: 2, offers: 3 },
+//   { month: "May", applications: 20, interviews: 6, offers: 1 },
+//   { month: "Jun", applications: 5, interviews: 1, offers: 0 },
+// ];
 
 const TrendsChart = () => {
-  // const { applications, fetchApplications } = useAppStore();
-  // useEffect(() => {
-  //   fetchApplications();
-  // }, [fetchApplications]);
+  const { fetchMonthlyStats, monthlyStats } = useStatsStore();
+  useEffect(() => {
+    fetchMonthlyStats();
+  }, [fetchMonthlyStats]);
 
-  // const monthlyData = groupApplicationsByMonth(applications);
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <LineChart data={monthlyData}>
+      <LineChart data={monthlyStats}>
         <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
         <XAxis dataKey="month" className="text-sm" />
         <YAxis className="text-sm" />

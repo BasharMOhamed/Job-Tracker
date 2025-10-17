@@ -1,25 +1,45 @@
+import { Activity, ActivityDTO } from "./Activity";
 import { Application } from "./Application";
 import { Event } from "./Event";
 
 export interface AppState {
   applications: Application[];
   events: Event[];
+  todaysEvents: Event[];
+  applicationsGroupedByStatus: applicationsGroupedByStatus;
+  activities: ActivityDTO[];
 
   // actions
   fetchApplications: () => Promise<void>;
+
+  addApplication: (app: Omit<Application, "_id">) => Promise<void>;
+  updateApplication: (
+    id: string,
+    updates: Partial<Application>
+  ) => Promise<void>;
+  moveApplication: (
+    id: string,
+    newStatus: Application["status"]
+  ) => Promise<void>;
+  deleteApplication: (id: string) => Promise<void>;
+  getApplication: (id: string) => Promise<Application>;
+
   fetchEvents: () => Promise<void>;
+  fetchTodayEvents: () => Promise<void>;
+  addEvent: (event: Omit<Event, "_id">) => Promise<void>;
+  updateEvent: (id: string, updates: Partial<Event>) => Promise<void>;
+  deleteEvent: (id: string) => Promise<void>;
+  getEvent: (id: string) => Promise<Event>;
 
-  addApplication: (app: Application) => void;
-  updateApplication: (id: string, updates: Partial<Application>) => void;
-  moveApplication: (id: string, newStatus: Application["status"]) => void;
+  getActivities: (number?: number) => Promise<void>;
+  createActivity: (activity: Omit<ActivityDTO, "_id">) => Promise<void>;
 
-  addEvent: (event: Event) => void;
-  updateEvent: (id: string, updates: Partial<Event>) => void;
-  deleteEvent: (id: string) => void;
-  getEventsByApplication: (appId: string) => void;
-  getApplicationsByStatus: (status: Application["status"]) => void;
-  getApplicationsGroupedByStatus: () => Record<
-    Application["status"],
-    Application[]
-  >;
+  getApplicationsGroupedByStatus: () => Promise<void>;
+}
+
+export interface applicationsGroupedByStatus {
+  Applied: Application[];
+  Interview: Application[];
+  Offer: Application[];
+  Rejected: Application[];
 }

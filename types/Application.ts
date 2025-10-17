@@ -27,6 +27,6 @@ interface Attachment {
 }
 
 export interface AddApplicationFormProps {
-  onSubmit: (data: Omit<Application, "id">) => void;
-  onCancel: () => void;
+  handleOpenAndClose: () => void;
+  application?: Application;
 }

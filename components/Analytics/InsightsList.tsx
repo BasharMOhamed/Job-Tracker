@@ -1,6 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { IconType } from "recharts/types/component/DefaultLegendContent";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InsightCardProps } from "@/types/Insight";
 
 const InsightsList = () => {

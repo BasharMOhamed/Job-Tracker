@@ -7,10 +7,12 @@ export async function POST(req: Request) {
     await connectDB();
     console.log("Connected");
     const body = await req.json();
+    console.log(body);
+    body.attachments.map((attachment) => (attachment.url = "help"));
     const newApp = await ApplicationModel.create(body);
     return NextResponse.json(newApp);
   } catch (error) {
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(`Internal Server Error ${error}`, { status: 500 });
   }
 }
 

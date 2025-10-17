@@ -5,8 +5,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import TrendsChart from "./TrendsChart";
+} from "@/components/ui/card";
+import TrendsChart from "@/components/Analytics/TrendsChart";
 
 const TrendsCard = () => {
   return (

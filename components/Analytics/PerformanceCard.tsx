@@ -5,8 +5,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import ProgressesList from "./ProgressesList";
+} from "@/components/ui/card";
+import ProgressesList from "@/components/Analytics/ProgressesList";
 
 const PerformanceCard = () => {
   return (

@@ -1,6 +1,12 @@
 export interface Activity {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  type: "offer" | "interview" | "application";
+  type: "Offer" | "Interview" | "Applied";
+}
+
+export interface ActivityDTO {
+  _id: string;
+  message: string;
+  type: "Offer" | "Interview" | "Applied";
 }

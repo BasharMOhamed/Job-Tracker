@@ -6,10 +6,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "@/components/ui/card";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { useAppStore } from "@/store/useAppStore";
-import { Value } from "@radix-ui/react-select";
+import { useStatsStore } from "@/store/useStatsStore";
 
 const ApplicationDistribution = () => {
   return (
@@ -38,20 +37,15 @@ const data = [
 const COLORS = ["#0088FE", "#FFBB28", "green", "red"];
 
 export function PieChartComponent() {
-  // const { applications, fetchApplications, getApplicationsGroupedByStatus } =
-  //   useAppStore();
+  const { applicationsStats, fetchAppsStats } = useStatsStore();
+  useEffect(() => {
+    fetchAppsStats();
+  }, [fetchAppsStats]);
 
-  // useEffect(() => {
-  //   fetchApplications();
-  // }, [fetchApplications]);
-  // const groupedApplications = getApplicationsGroupedByStatus();
-
-  // const data = [
-  //   { name: "Applied", value: groupedApplications.Applied.length },
-  //   { name: "Interview", value: groupedApplications.Interview.length },
-  //   { name: "Offer", value: groupedApplications.Offer.length },
-  // //   { name: "Rejected", value: groupedApplications.Rejected.length },
-  // ];
+  const data = Object.entries(applicationsStats).map(([key, value]) => ({
+    name: key,
+    value,
+  }));
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>

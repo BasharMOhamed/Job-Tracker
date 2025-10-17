@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,38 +7,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
 import { AddNewApplicationForm } from "./AddNewApplicationForm";
 import React from "react";
 import { Application } from "@/types/Application";
 
 export function AddApplication({
-  onApplicationAdded,
+  children,
+  application,
+  Open,
 }: {
-  onApplicationAdded?: () => void;
+  Open?: boolean;
+  children?: React.ReactNode;
+  application?: Application;
 }) {
   const [open, setOpen] = React.useState(false);
-  const handleSubmit = async (data: Omit<Application, "id">) => {
-    // TODO: Implement API call to save application
-    console.log("Saving application:", data);
+  const handleOpenAndClose = () => {
     setOpen(false);
-    onApplicationAdded?.();
   };
 
-  const handleCancel = () => {
-    setOpen(false);
-  };
+  React.useEffect(() => {
+    setOpen(Open || false);
+  }, [Open]);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          size={"lg"}
-          className="hidden md:flex bg-gradient-primary text-white"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Application
-        </Button>
-      </DialogTrigger>
+      {React.Children.count(children) > 0 && (
+        <DialogTrigger asChild>{children}</DialogTrigger>
+      )}
       <DialogContent
         style={{ scrollbarWidth: "none" }}
         className="max-w-4xl max-h-[90vh] overflow-y-auto no-srollbar"
@@ -51,8 +44,8 @@ export function AddApplication({
           </DialogDescription>
         </DialogHeader>
         <AddNewApplicationForm
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
+          handleOpenAndClose={handleOpenAndClose}
+          application={application}
         />
       </DialogContent>
     </Dialog>

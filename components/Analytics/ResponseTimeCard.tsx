@@ -5,8 +5,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import ResponseTimeChart from "./ResponseTimeChart";
+} from "@/components/ui/card";
+import ResponseTimeChart from "@/components/Analytics/ResponseTimeChart";
 
 const ResponseTimeCard = () => {
   return (

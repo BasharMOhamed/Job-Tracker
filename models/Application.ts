@@ -15,6 +15,12 @@ export interface Application extends Document {
   dateApplied: Date;
   responseDate: Date;
   location: string;
+  jobLink?: string;
+  interviewer?: string;
+  interviewDate?: Date;
+  interviewType?: "Onsite" | "Remote" | "Phone" | "Other";
+  meetingLink?: string;
+  notes?: string;
   attachments?: Attachment[];
   createdAt?: Date;
   updatedAt?: Date;
@@ -43,6 +49,15 @@ const applicationSchema = new Schema<Application>(
     location: { type: String, default: "Cairo, Egypt" },
     dateApplied: { type: Date, required: true },
     responseDate: { type: Date },
+    jobLink: { type: String },
+    interviewer: { type: String },
+    interviewDate: { type: Date },
+    interviewType: {
+      type: String,
+      enum: ["Onsite", "Remote", "Phone", "Other"],
+    },
+    meetingLink: { type: String },
+    notes: { type: String },
     attachments: [attachmentSchema],
   },
   { timestamps: true }

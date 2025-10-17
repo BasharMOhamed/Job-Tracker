@@ -1,21 +1,22 @@
 "use client";
 import React, { useEffect } from "react";
-import { Progress } from "./ui/progress";
+import { Progress } from "@/components/ui/progress";
 import { ProgressComponentProps } from "@/types/Progress";
-import { useAppStore } from "@/store/useAppStore";
+import { useStatsStore } from "@/store/useStatsStore";
 
 const ProgressesList = () => {
-  const { applications, getApplicationsGroupedByStatus, fetchApplications } =
-    useAppStore();
+  const { applicationsStats, fetchAppsStats } = useStatsStore();
   useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
+    fetchAppsStats();
+  }, [fetchAppsStats]);
 
-  const total = applications.length;
-  const groupedApplications = getApplicationsGroupedByStatus();
-
-  const interviewCount = groupedApplications.Interview.length;
-  const offerCount = groupedApplications.Offer.length;
+  const total =
+    applicationsStats.Applied +
+    applicationsStats.Interview +
+    applicationsStats.Offer +
+    applicationsStats.Rejected;
+  const interviewCount = applicationsStats.Interview;
+  const offerCount = applicationsStats.Offer;
 
   // Avoid division by zero
   const applicationToInterviewRate =
@@ -28,6 +29,7 @@ const ProgressesList = () => {
 
   const overallSuccessRate =
     total > 0 ? Math.round((offerCount / total) * 100) : 0;
+
   return (
     <div className="space-y-6">
       <ProgressComponent

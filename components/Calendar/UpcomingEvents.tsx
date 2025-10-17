@@ -28,7 +28,7 @@ const UpcomingEvents = () => {
         {/* <NoEvents /> */}
         {events.length === 0 && <NoEvents />}
         {events.map((event) => (
-          <EventsCard key={event.id} {...event} />
+          <EventsCard key={event._id} {...event} />
         ))}
       </CardContent>
     </Card>

@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import { RecommendationItemProps } from "@/types/Recommendation";
 
 const RecommendationsCard = () => {

@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CalendarIcon, Plus, Upload, X } from "lucide-react";
+import { CalendarIcon, FileType, Plus, Save, Upload, X } from "lucide-react";
 import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,11 @@ import {
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { AddApplicationFormProps } from "@/types/Application";
+import toast from "react-hot-toast";
+import { Attachment } from "@/models/Application";
+import axios from "axios";
+import { useAppStore } from "@/store/useAppStore";
+// import { Attachment } from "@/models/Application";
 // import { useToast } from "@/hooks/use-toast";
 
 const applicationSchema = z.object({
@@ -52,31 +57,43 @@ const applicationSchema = z.object({
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
 export function AddNewApplicationForm({
-  onSubmit,
-  onCancel,
+  handleOpenAndClose,
+  application,
 }: AddApplicationFormProps) {
   //   const { toast } = useToast();
-  const [attachments, setAttachments] = React.useState<File[]>([]);
+  const { addApplication, updateApplication } = useAppStore();
+  const [attachments, setAttachments] = React.useState<Attachment[]>(
+    application?.attachments || []
+  );
 
   const form = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
-      company: "",
-      position: "",
-      jobLink: "",
-      location: "",
-      status: "Applied",
-      dateApplied: new Date(),
-      interviewer: "",
-      meetingLink: "",
-      notes: "",
+      company: application?.company || "",
+      position: application?.position || "",
+      jobLink: application?.jobLink || "",
+      location: application?.location || "",
+      status: application?.status || "Applied",
+      dateApplied: application ? new Date(application.dateApplied) : new Date(),
+      interviewer: application?.interviewer || "",
+      meetingLink: application?.meetingLink || "",
+      notes: application?.notes || "",
     },
   });
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+    console.log("Files: ", files);
     if (files) {
-      const newFiles = Array.from(files);
+      console.log(files);
+      const newFiles = Array.from(files).map((file) => {
+        return {
+          filename: file.name,
+          fileSize: file.size,
+          fileType: file.type,
+          url: "",
+        };
+      });
       setAttachments((prev) => [...prev, ...newFiles]);
     }
   };
@@ -90,18 +107,12 @@ export function AddNewApplicationForm({
       // TODO: Handle file uploads to your backend/storage
       console.log("Form data:", data);
       console.log("Attachments:", attachments);
-
-      onSubmit(data);
-      //   toast({
-      //     title: "Success",
-      //     description: "Application added successfully!",
-      //   });
+      application
+        ? updateApplication(application._id, { ...data, attachments })
+        : addApplication({ ...data, attachments });
+      handleOpenAndClose();
     } catch (error) {
-      //   toast({
-      //     title: "Error",
-      //     description: "Failed to add application. Please try again.",
-      //     variant: "destructive",
-      //   });
+      toast.error("Failed to add application. Please try again.");
     }
   };
 
@@ -396,7 +407,7 @@ export function AddNewApplicationForm({
                     key={index}
                     className="flex items-center justify-between p-2 bg-muted rounded-md"
                   >
-                    <span className="text-sm font-medium">{file.name}</span>
+                    <span className="text-sm font-medium">{file.filename}</span>
                     <Button
                       type="button"
                       variant="ghost"
@@ -413,12 +424,25 @@ export function AddNewApplicationForm({
 
           {/* Form Actions */}
           <div className="flex justify-end gap-3 pt-4">
-            <Button type="button" variant="outline" onClick={onCancel}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleOpenAndClose}
+            >
               Cancel
             </Button>
             <Button type="submit">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Application
+              {application ? (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Changes
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Application
+                </>
+              )}
             </Button>
           </div>
         </form>

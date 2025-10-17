@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Filter, Plus } from "lucide-react";
 import Image from "next/image";
 import { AddApplication } from "./AddApplication";
-import AnalyticsDialog from "./AnalyticsDialog";
+import AnalyticsDialog from "./Analytics/AnalyticsDialog";
 
 const Hero = () => {
   return (
@@ -21,7 +21,15 @@ const Hero = () => {
             <Plus className="mr-2 h-5 w-5" />
             Add New Application
           </Button> */}
-          <AddApplication />
+          <AddApplication>
+            <Button
+              size={"lg"}
+              className="hidden md:flex bg-gradient-primary text-white"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Add Application
+            </Button>
+          </AddApplication>
           <AnalyticsDialog>
             <Button size={"lg"} variant={"outline"}>
               <Filter className="mr-2 h-5 w-5" />

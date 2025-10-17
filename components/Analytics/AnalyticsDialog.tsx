@@ -6,9 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import AnalyticsView from "./AnalyticsView";
-// import { DialogContent } from "@radix-ui/react-dialog";
 
 const AnalyticsDialog = ({ children }: { children: React.ReactNode }) => {
   return (

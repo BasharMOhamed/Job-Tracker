@@ -1,6 +1,5 @@
 "use client";
-import { useAppStore } from "@/store/useAppStore";
-import { prepareResponseTimeData } from "@/utils/analytics";
+import { useStatsStore } from "@/store/useStatsStore";
 import React, { useEffect } from "react";
 import {
   Bar,
@@ -12,25 +11,24 @@ import {
   YAxis,
 } from "recharts";
 
-const responseTimeData = [
-  { range: "0-3 days", count: 8 },
-  { range: "4-7 days", count: 15 },
-  { range: "1-2 weeks", count: 22 },
-  { range: "2-4 weeks", count: 18 },
-  { range: "1+ month", count: 12 },
-  { range: "No response", count: 25 },
-];
+// const responseTimeData = [
+//   { range: "0-3 days", count: 8 },
+//   { range: "4-7 days", count: 15 },
+//   { range: "1-2 weeks", count: 22 },
+//   { range: "2-4 weeks", count: 18 },
+//   { range: "1+ month", count: 12 },
+//   { range: "No response", count: 25 },
+// ];
 
 const ResponseTimeChart = () => {
-  const { applications, fetchApplications } = useAppStore();
+  const { fetchResponseTimeStats, responseTimeStats } = useStatsStore();
   useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
+    fetchResponseTimeStats();
+  }, [fetchResponseTimeStats]);
 
-  const responseTimeData = prepareResponseTimeData(applications);
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={responseTimeData}>
+      <BarChart data={responseTimeStats}>
         <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
         <XAxis
           dataKey="range"
