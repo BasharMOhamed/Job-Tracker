@@ -1,12 +1,18 @@
 import { connectDB } from "@/lib/mongodb";
 import { ApplicationModel } from "@/models/Application";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
+    const { isAuthenticated, userId } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const result = await ApplicationModel.aggregate([
       {
+        $match: { userId },
         $group: {
           _id: "$status",
           apps: { $push: "$$ROOT" },

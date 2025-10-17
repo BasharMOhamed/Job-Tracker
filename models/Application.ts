@@ -9,6 +9,7 @@ export interface Attachment {
 }
 
 export interface Application extends Document {
+  userId: string;
   company: string;
   position: string;
   status: "Applied" | "Interview" | "Offer" | "Rejected";
@@ -40,6 +41,7 @@ const attachmentSchema = new Schema<Attachment>(
 const applicationSchema = new Schema<Application>(
   {
     company: { type: String, required: true },
+    userId: { type: String, required: true },
     position: { type: String, required: true },
     status: {
       type: String,

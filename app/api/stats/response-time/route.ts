@@ -1,12 +1,17 @@
 import { connectDB } from "@/lib/mongodb";
 import { ApplicationModel } from "@/models/Application";
+import { auth } from "@clerk/nextjs/server";
 import { differenceInDays } from "date-fns";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
+    const { isAuthenticated, userId } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
-    const applications = await ApplicationModel.find();
+    const applications = await ApplicationModel.find({ userId });
     const buckets = {
       "0-3 days": 0,
       "4-7 days": 0,

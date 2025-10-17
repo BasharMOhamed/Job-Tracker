@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import { EventModel } from "@/models/Event";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 // GET SPECIFIC EVENT
@@ -8,6 +9,10 @@ export async function GET(
   { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
+    const { isAuthenticated } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { eventId } = await params;
     const event = await EventModel.findById(eventId);
@@ -28,6 +33,10 @@ export async function DELETE(
   { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
+    const { isAuthenticated } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { eventId } = await params;
     const event = await EventModel.findById(eventId);
@@ -49,6 +58,10 @@ export async function PATCH(
   { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
+    const { isAuthenticated } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { eventId } = await params;
     const body = await req.json();

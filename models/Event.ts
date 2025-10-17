@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 const eventSchema = new Schema(
   {
     applicationId: { type: Schema.Types.ObjectId, ref: "Application" },
+    userId: { type: String, required: true },
     title: { type: String, required: true },
     date: { type: Date, required: true },
     type: {

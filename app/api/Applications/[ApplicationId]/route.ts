@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/mongodb";
 import { ApplicationModel } from "@/models/Application";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 // DELETE SPECIFIC APPLICATION
@@ -8,6 +9,10 @@ export async function DELETE(
   { params }: { params: Promise<{ ApplicationId: string }> }
 ) {
   try {
+    const { isAuthenticated } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { ApplicationId } = await params;
     console.log("App ID: ", ApplicationId);
@@ -33,6 +38,10 @@ export async function PATCH(
   { params }: { params: Promise<{ ApplicationId: string }> }
 ) {
   try {
+    const { isAuthenticated } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { ApplicationId } = await params;
     const body = await req.json();
@@ -68,6 +77,10 @@ export async function GET(
   { params }: { params: Promise<{ ApplicationId: string }> }
 ) {
   try {
+    const { isAuthenticated } = await auth();
+
+    if (!isAuthenticated)
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { ApplicationId } = await params;
     console.log("App ID: ", ApplicationId);
