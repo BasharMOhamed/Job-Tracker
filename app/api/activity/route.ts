@@ -34,7 +34,6 @@ export async function POST(req: Request) {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const body = await req.json();
-    console.log(body);
     const activity = await ActivityModel.create({ ...body, userId });
 
     return NextResponse.json(activity);

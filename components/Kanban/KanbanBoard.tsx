@@ -43,7 +43,6 @@ const KanbanBoard = () => {
 
   const handleDragStart = (event: any) => {
     const { active } = event;
-    console.log("Active: ", active);
     const container = findContainer(active.id);
     if (!container) return;
 

@@ -61,10 +61,13 @@ export function AddNewApplicationForm({
   application,
 }: AddApplicationFormProps) {
   //   const { toast } = useToast();
-  const { addApplication, updateApplication } = useAppStore();
+  const { addApplication, updateApplication, applicationsLoading } =
+    useAppStore();
   const [attachments, setAttachments] = React.useState<Attachment[]>(
     application?.attachments || []
   );
+
+  const [pendingFiles, setPendingFiles] = React.useState<File[]>([]);
 
   const form = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
@@ -81,37 +84,207 @@ export function AddNewApplicationForm({
     },
   });
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    console.log("Files: ", files);
-    if (files) {
-      console.log(files);
-      const newFiles = Array.from(files).map((file) => {
-        return {
-          filename: file.name,
-          fileSize: file.size,
-          fileType: file.type,
-          url: "",
-        };
-      });
-      setAttachments((prev) => [...prev, ...newFiles]);
-    }
-  };
+  // const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const files = event.target.files;
+  //   if (!files || files.length === 0) return;
+  //   const newFiles = Array.from(files).map((file) => {
+  //     return {
+  //       filename: file.name,
+  //       fileSize: file.size,
+  //       fileType: file.type,
+  //       url: "",
+  //     };
+  //   });
+  //   setAttachments((prev) => [...prev, ...newFiles]);
+  // };
 
-  const removeAttachment = (index: number) => {
+  const removeUploadedAttachment = (index: number) => {
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // const handleFileUpload = async (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const files = event.target.files;
+  //   if (!files || files.length === 0) return;
+
+  //   // convert File -> { filename, contentType, data (base64), size }
+  //   const toPayload = (file: File) =>
+  //     new Promise<{
+  //       filename: string;
+  //       contentType: string;
+  //       data: string;
+  //       size: number;
+  //     }>((resolve, reject) => {
+  //       const reader = new FileReader();
+  //       reader.onerror = () => reject(new Error("File read error"));
+  //       reader.onload = () => {
+  //         const result = reader.result as string; // data:<type>;base64,<base64>
+  //         const base64 = result.split(",")[1];
+  //         resolve({
+  //           filename: file.name,
+  //           contentType: file.type || "application/octet-stream",
+  //           data: base64,
+  //           size: file.size,
+  //         });
+  //       };
+  //       reader.readAsDataURL(file);
+  //     });
+
+  //   try {
+  //     const filePayloads = await Promise.all(Array.from(files).map(toPayload));
+
+  //     // send to server upload endpoint
+  //     const res = await fetch("/api/upload", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         files: filePayloads.map(({ filename, contentType, data }) => ({
+  //           filename,
+  //           contentType,
+  //           data,
+  //         })),
+  //       }),
+  //     });
+
+  //     if (!res.ok) {
+  //       throw new Error("Upload failed");
+  //     }
+
+  //     const data = await res.json();
+  //     const uploaded = data.files.map((f: any, index: number) => ({
+  //       filename: f.filename,
+  //       fileSize: filePayloads[index].size,
+  //       fileType: f.fileType,
+  //       url: f.url,
+  //       public_id: f.public_id,
+  //     }));
+
+  //     setAttachments((prev) => [...prev, ...uploaded]);
+  //     toast.success("Files uploaded");
+  //   } catch (err) {
+  //     console.error(err);
+  //     toast.error("File upload failed");
+  //   } finally {
+  //     if (event.target) event.target.value = "";
+  //   }
+  // };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    setPendingFiles((prev) => [...prev, ...Array.from(files)]);
+    if (event.target) event.target.value = "";
+  };
+
+  const removePendingFile = (index: number) => {
+    setPendingFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const uploadPendingFiles = async (files: File[]) => {
+    if (!files.length) return [];
+    // convert to base64 payloads
+    const toPayload = (file: File) =>
+      new Promise<{
+        filename: string;
+        contentType: string;
+        data: string;
+        size: number;
+      }>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("File read error"));
+        reader.onload = () => {
+          const result = reader.result as string; // data:<type>;base64,<base64>
+          const base64 = result.split(",")[1];
+          resolve({
+            filename: file.name,
+            contentType: file.type || "application/octet-stream",
+            data: base64,
+            size: file.size,
+          });
+        };
+        reader.readAsDataURL(file);
+      });
+
+    const filePayloads = await Promise.all(files.map(toPayload));
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        files: filePayloads.map(({ filename, contentType, data }) => ({
+          filename,
+          contentType,
+          data,
+        })),
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Upload failed");
+    }
+    const data = await res.json();
+    // map server response to Attachment shape used in your model
+    const uploaded: Attachment[] = data.files.map((f: any, i: number) => ({
+      filename: f.filename,
+      fileSize: filePayloads[i].size,
+      fileType: f.fileType || filePayloads[i].contentType,
+      url: f.url,
+      public_id: f.public_id,
+    }));
+    return uploaded;
+  };
+
+  // const handleSubmit = async (data: ApplicationFormData) => {
+  //   try {
+  //     // TODO: Handle file uploads to your backend/storage
+  //     application
+  //       ? updateApplication(application._id, { ...data, attachments })
+  //       : addApplication({ ...data, attachments });
+  //     handleOpenAndClose();
+  //   } catch (error) {
+  //     toast.error("Failed to add application. Please try again.");
+  //   }
+  // };
+
   const handleSubmit = async (data: ApplicationFormData) => {
     try {
-      // TODO: Handle file uploads to your backend/storage
-      console.log("Form data:", data);
-      console.log("Attachments:", attachments);
-      application
-        ? updateApplication(application._id, { ...data, attachments })
-        : addApplication({ ...data, attachments });
-      handleOpenAndClose();
+      // if there are pending files, upload them now
+      let uploadedAttachments: Attachment[] = [];
+      if (pendingFiles.length > 0) {
+        try {
+          uploadedAttachments = await uploadPendingFiles(pendingFiles);
+        } catch (err) {
+          console.error("File upload failed", err);
+          toast.error("File upload failed. Please try again.");
+          return; // don't proceed to creating/updating application if file upload failed
+        }
+      }
+
+      const finalAttachments = [...attachments, ...uploadedAttachments];
+
+      // prepare payload: convert dates to ISO strings if needed by backend
+      const payload = {
+        ...data,
+        attachments: finalAttachments,
+      };
+
+      if (application) {
+        await updateApplication(application._id, payload);
+        toast.success("Application updated");
+      } else {
+        await addApplication(payload);
+        toast.success("Application added");
+      }
+
+      // clear pending files after successful submit
+      setPendingFiles([]);
+      // if new application added, attachments in form should reflect saved ones
+      setAttachments(finalAttachments);
+
+      handleOpenAndClose?.();
     } catch (error) {
+      console.error(error);
       toast.error("Failed to add application. Please try again.");
     }
   };
@@ -375,7 +548,6 @@ export function AddNewApplicationForm({
             )}
           />
 
-          {/* File Attachments */}
           <div className="space-y-3">
             <Label>Attachments</Label>
             <div className="flex items-center gap-2">
@@ -400,11 +572,12 @@ export function AddNewApplicationForm({
               </span>
             </div>
 
+            {/* show already uploaded attachments */}
             {attachments.length > 0 && (
               <div className="space-y-2">
                 {attachments.map((file, index) => (
                   <div
-                    key={index}
+                    key={`uploaded-${index}`}
                     className="flex items-center justify-between p-2 bg-muted rounded-md"
                   >
                     <span className="text-sm font-medium">{file.filename}</span>
@@ -412,7 +585,35 @@ export function AddNewApplicationForm({
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => removeAttachment(index)}
+                      onClick={() => removeUploadedAttachment(index)}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* show pending files (not uploaded yet) */}
+            {pendingFiles.length > 0 && (
+              <div className="space-y-2">
+                {pendingFiles.map((file, index) => (
+                  <div
+                    key={`pending-${index}`}
+                    className="flex items-center justify-between p-2 border rounded-md"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FileType className="w-4 h-4" />
+                      <span className="text-sm font-medium">{file.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {(file.size / 1024).toFixed(1)} KB
+                      </span>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removePendingFile(index)}
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -431,16 +632,66 @@ export function AddNewApplicationForm({
             >
               Cancel
             </Button>
-            <Button type="submit">
+            <Button type="submit" disabled={form.formState.isSubmitting}>
               {application ? (
                 <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Changes
+                  {form.formState.isSubmitting ? (
+                    <svg
+                      className="animate-spin w-4 h-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      />
+                    </svg>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save Changes
+                    </>
+                  )}
                 </>
               ) : (
                 <>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Application
+                  {form.formState.isSubmitting ? (
+                    <svg
+                      className="animate-spin w-4 h-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      />
+                    </svg>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Application
+                    </>
+                  )}
                 </>
               )}
             </Button>

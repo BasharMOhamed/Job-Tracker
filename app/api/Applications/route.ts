@@ -10,10 +10,9 @@ export async function POST(req: Request) {
     if (!isAuthenticated)
       return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
-    console.log("Connected");
     const body = await req.json();
-    console.log(body);
-    body.attachments.map((attachment) => (attachment.url = "help"));
+    // body.attachments.map((attachment: any) => (attachment.url = "help"));
+    console.log("BODY", body);
     const newApp = await ApplicationModel.create({ ...body, userId });
     return NextResponse.json(newApp);
   } catch (error) {
@@ -27,9 +26,7 @@ export async function GET(req: Request) {
 
     if (!isAuthenticated)
       return NextResponse.redirect(new URL("/sign-in", req.url));
-    console.log("Before db");
     await connectDB();
-    console.log("Connected");
     const applications = await ApplicationModel.find({ userId });
     return NextResponse.json(applications);
   } catch (error) {

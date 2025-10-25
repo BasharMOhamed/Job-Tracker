@@ -10,9 +10,9 @@ const CalendarTab = () => {
   return (
     <>
       <div className="flex justify-between items-center mb-4 ">
-        <h2 className="text-3xl font-bold ">Interview Calendar</h2>
+        <h2 className="text-xl md:text-2xl font-bold ">Interview Calendar</h2>
         <AddEventDialog>
-          <Button className="bg-gradient-primary text-white">
+          <Button size={"sm"} className="bg-gradient-primary text-white">
             <Plus className="h-4 w-4" />
             Add Event
           </Button>

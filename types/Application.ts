@@ -24,6 +24,7 @@ interface Attachment {
   url: string;
   fileType: string;
   fileSize: number;
+  public_id: string;
 }
 
 export interface AddApplicationFormProps {

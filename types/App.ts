@@ -8,6 +8,7 @@ export interface AppState {
   todaysEvents: Event[];
   applicationsGroupedByStatus: applicationsGroupedByStatus;
   activities: ActivityDTO[];
+  applicationsLoading: boolean;
 
   // actions
   fetchApplications: () => Promise<void>;

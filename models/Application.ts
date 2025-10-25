@@ -5,6 +5,7 @@ export interface Attachment {
   url: string;
   fileType: string;
   fileSize: number;
+  public_id: string;
   uploadedAt?: Date;
 }
 
@@ -33,6 +34,7 @@ const attachmentSchema = new Schema<Attachment>(
     url: { type: String, required: true },
     fileType: { type: String },
     fileSize: { type: Number },
+    public_id: { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now },
   },
   { _id: false }

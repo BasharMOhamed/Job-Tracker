@@ -1,5 +1,6 @@
+import cloudinary from "@/lib/cloudinary";
 import { connectDB } from "@/lib/mongodb";
-import { ApplicationModel } from "@/models/Application";
+import { ApplicationModel, Attachment } from "@/models/Application";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -15,11 +16,14 @@ export async function DELETE(
       return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { ApplicationId } = await params;
-    console.log("App ID: ", ApplicationId);
     const app = await ApplicationModel.findById(ApplicationId);
     if (!app) {
       return new NextResponse("Application Not Found", { status: 404 });
     }
+
+    app.attachments.forEach(async (attachment: Attachment) => {
+      await cloudinary.uploader.destroy(attachment.public_id);
+    });
 
     await ApplicationModel.findByIdAndDelete(ApplicationId);
     return new NextResponse("Application Deleted Successfully", {
@@ -83,7 +87,6 @@ export async function GET(
       return NextResponse.redirect(new URL("/sign-in", req.url));
     await connectDB();
     const { ApplicationId } = await params;
-    console.log("App ID: ", ApplicationId);
     const app = await ApplicationModel.findById(ApplicationId);
     if (!app) {
       return new NextResponse("Application Not Found", { status: 404 });

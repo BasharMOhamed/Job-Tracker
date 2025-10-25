@@ -13,11 +13,22 @@ const ApplicationCards = () => {
   const { applications, fetchApplications } = useAppStore();
 
   return (
-    <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
-      {applications.map((application) => (
-        <ApplicationCard key={application._id} {...application} />
-      ))}
-    </div>
+    <>
+      {applications.length > 0 ? (
+        <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
+          {applications.map((application) => (
+            <ApplicationCard key={application._id} {...application} />
+          ))}
+        </div>
+      ) : (
+        <div className="border-1 rounded-lg bg-muted text-center py-12">
+          <h3 className="text-lg font-semibold">No Applications Yet.</h3>
+          <p className="text-muted-foreground mt-2">
+            Try adding a new application to get started!
+          </p>
+        </div>
+      )}
+    </>
   );
 };
 
