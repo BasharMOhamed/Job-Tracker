@@ -117,8 +117,8 @@ With this app, users can:
 1️⃣ Clone the repo
 
 ```bash
-git clone https://github.com/BasharMOhamed/Job-Traker.git
-cd Job-Traker
+git clone https://github.com/BasharMOhamed/Job-Tracker.git
+cd Job-Tracker
 ```
 
 2️⃣ Install dependencies
