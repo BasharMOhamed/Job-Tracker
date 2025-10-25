@@ -1,4 +1,4 @@
-# 🛒 Job Tracker
+# 💼 Job Tracker
 
 Personal job application management dashboard.
 
